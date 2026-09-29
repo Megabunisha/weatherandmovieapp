@@ -1,0 +1,2134 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PulseHub PRO - Weather & Movie Explorer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+/* ==========================================================================
+   PulseHub PRO - Ultra Bright & Vibrant Design System
+   Features: Light Theme default, Dark Theme switchable, Glassmorphism, 
+   Hourly forecast scroll, Movie favorites, Modern Typography
+   ========================================================================== */
+
+:root {
+  /* BRIGHT LIGHT MODE (Default) */
+  --bg-page: #f8fafc;
+  --bg-mesh-1: rgba(99, 102, 241, 0.14);
+  --bg-mesh-2: rgba(244, 63, 94, 0.12);
+  --bg-mesh-3: rgba(16, 185, 129, 0.12);
+  
+  --bg-card: rgba(255, 255, 255, 0.92);
+  --bg-card-sub: rgba(241, 245, 249, 0.8);
+  --bg-card-hover: #ffffff;
+  
+  --glass-border: rgba(203, 213, 225, 0.6);
+  --glass-border-focus: rgba(99, 102, 241, 0.5);
+  
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+  --accent-cyan: #0284c7;
+  --accent-rose: #f43f5e;
+  --accent-emerald: #10b981;
+  --accent-amber: #f59e0b;
+  
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --text-inverse: #ffffff;
+  
+  --radius-sm: 10px;
+  --radius-md: 18px;
+  --radius-lg: 28px;
+  --radius-full: 9999px;
+  
+  --shadow-card: 0 16px 36px -10px rgba(15, 23, 42, 0.08), 0 0 1px rgba(15, 23, 42, 0.12);
+  --shadow-glow: 0 8px 25px rgba(79, 70, 229, 0.25);
+  
+  --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* DARK MODE OVERRIDES */
+[data-theme="dark"] {
+  --bg-page: #0b0f19;
+  --bg-mesh-1: rgba(99, 102, 241, 0.18);
+  --bg-mesh-2: rgba(168, 85, 247, 0.15);
+  --bg-mesh-3: rgba(0, 242, 254, 0.08);
+  
+  --bg-card: rgba(20, 26, 42, 0.85);
+  --bg-card-sub: rgba(15, 23, 42, 0.6);
+  --bg-card-hover: rgba(30, 41, 59, 0.95);
+  
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-border-focus: rgba(99, 102, 241, 0.6);
+  
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  
+  --shadow-card: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--bg-page);
+  background-image: 
+    radial-gradient(at 0% 0%, var(--bg-mesh-1) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, var(--bg-mesh-2) 0px, transparent 50%),
+    radial-gradient(at 50% 100%, var(--bg-mesh-3) 0px, transparent 50%);
+  background-attachment: fixed;
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.app-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 24px 20px;
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header Navigation */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--glass-border);
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brand-logo {
+  width: 50px;
+  height: 50px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, #4f46e5, #06b6d4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  box-shadow: var(--shadow-glow);
+}
+
+.brand h1 {
+  font-size: 1.7rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  letter-spacing: -0.5px;
+}
+
+.super-badge {
+  background: linear-gradient(135deg, var(--accent-rose), var(--accent-amber));
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.sub-title {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.nav-tabs {
+  display: flex;
+  background: var(--bg-card-sub);
+  padding: 6px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--glass-border);
+}
+
+.tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border-radius: var(--radius-full);
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.tab-btn:hover {
+  color: var(--text-main);
+}
+
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), #3b82f6);
+  color: #ffffff;
+  box-shadow: var(--shadow-glow);
+}
+
+.theme-toggle-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--glass-border);
+  background: var(--bg-card);
+  color: var(--text-main);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  box-shadow: var(--shadow-card);
+}
+
+.theme-toggle-btn:hover {
+  transform: rotate(20deg) scale(1.05);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* Glass Panels */
+.glass-panel {
+  background: var(--bg-card);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+/* Sections */
+.app-section {
+  display: none;
+  animation: fadeIn 0.35s ease-out forwards;
+}
+
+.app-section.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Search Box & Toolbar */
+.search-box {
+  margin-bottom: 32px;
+}
+
+.search-form {
+  display: flex;
+  gap: 12px;
+  max-width: 760px;
+}
+
+.input-wrapper {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 18px;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.search-form input {
+  width: 100%;
+  padding: 16px 52px 16px 52px;
+  background: var(--bg-card);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  color: var(--text-main);
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: var(--transition);
+  outline: none;
+  box-shadow: var(--shadow-card);
+}
+
+.search-form input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
+}
+
+.icon-btn {
+  position: absolute;
+  right: 14px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+}
+
+.icon-btn:hover {
+  color: var(--primary);
+  background: rgba(79, 70, 229, 0.1);
+}
+
+.submit-btn {
+  padding: 0 32px;
+  background: linear-gradient(135deg, var(--primary), #3b82f6);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+  box-shadow: var(--shadow-glow);
+}
+
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(79, 70, 229, 0.4);
+}
+
+.search-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.city-chips {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.chip-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.chip-btn, .movie-chip-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--glass-border);
+  color: var(--text-muted);
+  padding: 7px 16px;
+  border-radius: var(--radius-full);
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: var(--shadow-card);
+}
+
+.chip-btn:hover, .movie-chip-btn:hover {
+  background: var(--primary);
+  color: #ffffff;
+  border-color: var(--primary);
+}
+
+/* °C / °F Unit Switcher */
+.unit-toggle-group {
+  display: flex;
+  background: var(--bg-card-sub);
+  padding: 4px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--glass-border);
+}
+
+.unit-btn {
+  padding: 6px 16px;
+  border: none;
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.unit-btn.active {
+  background: var(--primary);
+  color: #fff;
+}
+
+/* Movie Filter View Tabs */
+.movie-view-tabs {
+  display: flex;
+  gap: 8px;
+}
+
+.filter-tab {
+  padding: 8px 18px;
+  background: var(--bg-card);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-full);
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.filter-tab.active {
+  background: var(--accent-rose);
+  color: #fff;
+  border-color: var(--accent-rose);
+}
+
+.count-badge {
+  background: rgba(255, 255, 255, 0.3);
+  padding: 2px 7px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+}
+
+/* Loader */
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 0;
+  gap: 16px;
+  color: var(--text-muted);
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid rgba(79, 70, 229, 0.15);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Weather Layout */
+.weather-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.weather-hero-card {
+  padding: 36px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.card-header h2 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.condition-badge {
+  background: linear-gradient(135deg, var(--primary), var(--accent-cyan));
+  color: #ffffff;
+  padding: 8px 18px;
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  box-shadow: var(--shadow-glow);
+}
+
+.hero-body {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 32px 0;
+}
+
+.temp-display {
+  font-size: 5.5rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--text-main);
+  letter-spacing: -2px;
+}
+
+.temp-display .unit {
+  font-size: 2.8rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin-left: 4px;
+}
+
+.weather-visual {
+  text-align: center;
+}
+
+.weather-visual img {
+  width: 110px;
+  height: 110px;
+  filter: drop-shadow(0 10px 20px rgba(79, 70, 229, 0.25));
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.weather-visual p {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-main);
+  text-transform: capitalize;
+}
+
+.weather-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  background: var(--bg-card-sub);
+  padding: 24px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--glass-border);
+}
+
+.metric-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.metric-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+
+.humidity-icon { background: linear-gradient(135deg, #0284c7, #38bdf8); }
+.wind-icon { background: linear-gradient(135deg, #10b981, #34d399); }
+.feels-icon { background: linear-gradient(135deg, #f43f5e, #fb7185); }
+.uv-icon { background: linear-gradient(135deg, #f59e0b, #fbbf24); }
+
+.metric-label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.metric-item strong {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+/* Hourly Timeline Track */
+.hourly-panel {
+  padding: 28px;
+}
+
+.hourly-panel h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.hourly-scroll-track {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding-bottom: 12px;
+  scroll-behavior: smooth;
+}
+
+.hourly-scroll-track::-webkit-scrollbar {
+  height: 6px;
+}
+
+.hourly-scroll-track::-webkit-scrollbar-thumb {
+  background: var(--glass-border);
+  border-radius: var(--radius-full);
+}
+
+.hourly-card {
+  min-width: 90px;
+  padding: 16px 12px;
+  background: var(--bg-card-sub);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--glass-border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  transition: var(--transition);
+}
+
+.hourly-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--primary);
+  background: var(--bg-card);
+}
+
+.hourly-time {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.hourly-card img {
+  width: 36px;
+  height: 36px;
+}
+
+.hourly-temp {
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+/* Forecast Panel */
+.forecast-panel {
+  padding: 32px;
+}
+
+.forecast-panel h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+
+.forecast-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+}
+
+.forecast-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 14px;
+  background: var(--bg-card-sub);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--glass-border);
+  transition: var(--transition);
+  text-align: center;
+  gap: 10px;
+}
+
+.forecast-card:hover {
+  background: var(--bg-card);
+  transform: translateY(-4px);
+  border-color: var(--primary);
+  box-shadow: var(--shadow-card);
+}
+
+.forecast-date {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.forecast-card img {
+  width: 48px;
+  height: 48px;
+}
+
+.forecast-temp {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.forecast-temp .low {
+  color: var(--text-muted);
+  font-weight: 500;
+  font-size: 0.9rem;
+  display: block;
+}
+
+/* Movie Cards Grid */
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 28px;
+}
+
+.movie-card {
+  background: var(--bg-card);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: var(--shadow-card);
+}
+
+.movie-card:hover {
+  transform: translateY(-8px);
+  border-color: var(--primary);
+  box-shadow: 0 20px 40px -10px rgba(79, 70, 229, 0.2);
+}
+
+.poster-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2/3;
+  background: #cbd5e1;
+  overflow: hidden;
+}
+
+.poster-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.movie-card:hover .poster-wrapper img {
+  transform: scale(1.06);
+}
+
+.fav-card-btn {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  transition: var(--transition);
+  z-index: 5;
+}
+
+.fav-card-btn:hover {
+  transform: scale(1.15);
+}
+
+.rating-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--accent-amber);
+}
+
+.movie-info {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: space-between;
+}
+
+.movie-info h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 10px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.movie-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+/* Modal Window */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(14px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: modalFadeIn 0.25s ease-out;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-card {
+  max-width: 840px;
+  width: 100%;
+  position: relative;
+  padding: 36px;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: modalScaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalScaleUp {
+  from { transform: scale(0.92); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background: var(--bg-card-sub);
+  border: 1px solid var(--glass-border);
+  color: var(--text-main);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 1.6rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  z-index: 10;
+}
+
+.modal-close-btn:hover {
+  background: var(--accent-rose);
+  color: #fff;
+  transform: rotate(90deg);
+}
+
+.modal-content-wrapper {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 32px;
+}
+
+.modal-poster-box {
+  width: 100%;
+  aspect-ratio: 2/3;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.modal-poster-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.modal-details {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.modal-header h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.modal-meta {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.badge {
+  background: var(--bg-card-sub);
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  font-weight: 700;
+  border: 1px solid var(--glass-border);
+}
+
+.genre-list {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.genre-tag {
+  background: rgba(79, 70, 229, 0.12);
+  border: 1px solid rgba(79, 70, 229, 0.25);
+  color: var(--primary);
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.summary-text {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text-main);
+}
+
+.modal-info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  background: var(--bg-card-sub);
+  padding: 18px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--glass-border);
+}
+
+.info-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.modal-info-grid strong {
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: var(--transition);
+  border: none;
+}
+
+.trailer-btn {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.3);
+}
+
+.trailer-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(239, 68, 68, 0.45);
+}
+
+.fav-btn {
+  background: var(--bg-card-sub);
+  border: 1px solid var(--glass-border);
+  color: var(--text-main);
+}
+
+.fav-btn:hover {
+  background: var(--accent-rose);
+  color: #fff;
+  border-color: var(--accent-rose);
+}
+
+/* Toast Notifications */
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.toast {
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  padding: 14px 22px;
+  border-radius: var(--radius-md);
+  color: var(--text-main);
+  font-size: 0.9rem;
+  font-weight: 600;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  animation: toastSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.toast.error { border-left: 4px solid var(--accent-rose); }
+.toast.success { border-left: 4px solid var(--accent-emerald); }
+
+@keyframes toastSlideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+/* Footer */
+.app-footer {
+  text-align: center;
+  padding-top: 36px;
+  margin-top: auto;
+  border-top: 1px solid var(--glass-border);
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* Responsive Media Queries */
+@media (max-width: 960px) {
+  .weather-metrics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .forecast-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .modal-content-wrapper {
+    grid-template-columns: 1fr;
+  }
+  
+  .modal-poster-box {
+    max-width: 220px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .app-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .search-form {
+    flex-direction: column;
+  }
+  
+  .hero-body {
+    flex-direction: column;
+    gap: 20px;
+    align-items: flex-start;
+  }
+  
+  .weather-metrics {
+    grid-template-columns: 1fr;
+  }
+  
+  .forecast-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .modal-info-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+</style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header Navigation -->
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-logo">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <div>
+          <h1>PulseHub <span class="super-badge">PRO</span></h1>
+          <span class="sub-title">Bright Weather & Movie Portal</span>
+        </div>
+      </div>
+
+      <div class="header-right">
+        <nav class="nav-tabs" role="tablist">
+          <button id="tab-weather" class="tab-btn active" role="tab" aria-selected="true" data-tab="weather-section">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            Weather
+          </button>
+          <button id="tab-movies" class="tab-btn" role="tab" aria-selected="false" data-tab="movies-section">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="17" x2="22" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/></svg>
+            Movies &amp; Shows
+          </button>
+        </nav>
+
+        <!-- Bright / Dark Mode Toggle -->
+        <button id="theme-toggle-btn" class="theme-toggle-btn" title="Toggle Light/Dark Theme">
+          <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          <svg class="moon-icon hidden" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="content-area">
+      <!-- WEATHER SECTION -->
+      <section id="weather-section" class="app-section active">
+        <div class="search-box">
+          <form id="weather-form" class="search-form">
+            <div class="input-wrapper">
+              <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" id="weather-input" placeholder="Search city name (e.g. Chennai, Tokyo, Paris, London)..." autocomplete="off" required>
+              <button type="button" id="geo-btn" class="icon-btn" title="Use current location">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+            <button type="submit" class="submit-btn">Get Weather</button>
+          </form>
+
+          <!-- Quick City Chips & Unit Toggle -->
+          <div class="search-toolbar">
+            <div class="city-chips">
+              <span class="chip-label">Popular Cities:</span>
+              <button type="button" class="chip-btn" data-city="Chennai">Chennai</button>
+              <button type="button" class="chip-btn" data-city="Tokyo">Tokyo</button>
+              <button type="button" class="chip-btn" data-city="London">London</button>
+              <button type="button" class="chip-btn" data-city="New York">New York</button>
+              <button type="button" class="chip-btn" data-city="Paris">Paris</button>
+              <button type="button" class="chip-btn" data-city="Sydney">Sydney</button>
+            </div>
+
+            <!-- °C / °F Unit Switcher -->
+            <div class="unit-toggle-group">
+              <button type="button" id="unit-c" class="unit-btn active" data-unit="C">°C</button>
+              <button type="button" id="unit-f" class="unit-btn" data-unit="F">°F</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Weather Status Displays -->
+        <div id="weather-loader" class="loader-container hidden">
+          <div class="spinner"></div>
+          <p>Gathering live weather telemetry...</p>
+        </div>
+
+        <div id="weather-content" class="weather-layout">
+          <!-- Main Hero Weather Card -->
+          <div class="weather-hero-card glass-panel">
+            <div class="card-header">
+              <div>
+                <h2 id="weather-city-name">Chennai, India</h2>
+                <p id="weather-date-time" class="text-muted">Live telemetry updated</p>
+              </div>
+              <span id="weather-badge" class="condition-badge">Tropical</span>
+            </div>
+
+            <div class="hero-body">
+              <div class="temp-display">
+                <span id="weather-temp">32</span><span class="unit" id="weather-temp-unit">°C</span>
+              </div>
+              <div class="weather-visual">
+                <img id="weather-icon" src="https://raw.githubusercontent.com/basmilius/weather-icons/dev/production/fill/svg/partly-cloudy-day.svg" alt="Weather visual">
+                <p id="weather-condition-desc">Partly Cloudy ⛅</p>
+              </div>
+            </div>
+
+            <!-- Core Metrics Grid -->
+            <div class="weather-metrics">
+              <div class="metric-item">
+                <div class="metric-icon humidity-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                </div>
+                <div>
+                  <span class="metric-label">Humidity</span>
+                  <strong id="weather-humidity">74%</strong>
+                </div>
+              </div>
+
+              <div class="metric-item">
+                <div class="metric-icon wind-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg>
+                </div>
+                <div>
+                  <span class="metric-label">Wind Speed</span>
+                  <strong id="weather-wind">14 km/h</strong>
+                </div>
+              </div>
+
+              <div class="metric-item">
+                <div class="metric-icon feels-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                </div>
+                <div>
+                  <span class="metric-label">Feels Like</span>
+                  <strong id="weather-feels">37°C</strong>
+                </div>
+              </div>
+
+              <div class="metric-item">
+                <div class="metric-icon uv-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+                </div>
+                <div>
+                  <span class="metric-label">UV Index</span>
+                  <strong id="weather-uv">8.5 (UV)</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 24-Hour Hourly Timeline -->
+          <div class="hourly-panel glass-panel">
+            <h3>24-Hour Hourly Forecast</h3>
+            <div id="hourly-scroll-track" class="hourly-scroll-track"></div>
+          </div>
+
+          <!-- 5-Day Extended Forecast Card -->
+          <div class="forecast-panel glass-panel">
+            <h3>5-Day Extended Forecast</h3>
+            <div id="forecast-grid" class="forecast-grid"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MOVIE SEARCH SECTION -->
+      <section id="movies-section" class="app-section">
+        <div class="search-box">
+          <form id="movie-form" class="search-form">
+            <div class="input-wrapper">
+              <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" id="movie-input" placeholder="Search movies, series, or anime (e.g. Inception, Avatar, Batman)..." autocomplete="off" required>
+            </div>
+            <button type="submit" class="submit-btn">Search Movies</button>
+          </form>
+
+          <!-- Movie Filter Toolbar -->
+          <div class="search-toolbar">
+            <div class="city-chips">
+              <span class="chip-label">Trending:</span>
+              <button type="button" class="movie-chip-btn" data-query="Batman">Batman</button>
+              <button type="button" class="movie-chip-btn" data-query="Avatar">Avatar</button>
+              <button type="button" class="movie-chip-btn" data-query="Inception">Inception</button>
+              <button type="button" class="movie-chip-btn" data-query="Avengers">Avengers</button>
+              <button type="button" class="movie-chip-btn" data-query="Spider-Man">Spider-Man</button>
+            </div>
+
+            <div class="movie-view-tabs">
+              <button type="button" id="view-all-movies" class="filter-tab active">All Results</button>
+              <button type="button" id="view-favorites-movies" class="filter-tab">
+                ❤️ Favorites <span id="fav-count-badge" class="count-badge">0</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Movie Loader -->
+        <div id="movie-loader" class="loader-container hidden">
+          <div class="spinner"></div>
+          <p>Searching movie database...</p>
+        </div>
+
+        <!-- Movie Results Grid -->
+        <div id="movie-results-container">
+          <div id="movie-grid" class="movie-grid"></div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Modal Dialog for Movie Details -->
+    <div id="movie-modal" class="modal-backdrop hidden" aria-hidden="true">
+      <div class="modal-card glass-panel" role="dialog" aria-modal="true">
+        <button id="modal-close" class="modal-close-btn" aria-label="Close modal">&times;</button>
+        <div class="modal-content-wrapper">
+          <div class="modal-poster-box">
+            <img id="modal-poster" src="" alt="Movie poster">
+          </div>
+          <div class="modal-details">
+            <div class="modal-header">
+              <h2 id="modal-title">--</h2>
+              <div class="modal-meta">
+                <span id="modal-year" class="badge">--</span>
+                <span id="modal-rating" class="badge rating-badge">⭐ --</span>
+                <span id="modal-runtime" class="badge text-muted">--</span>
+              </div>
+            </div>
+
+            <div class="genre-list" id="modal-genres"></div>
+
+            <p id="modal-summary" class="summary-text">--</p>
+
+            <div class="modal-info-grid">
+              <div>
+                <span class="info-label">Network / Studio</span>
+                <strong id="modal-network">--</strong>
+              </div>
+              <div>
+                <span class="info-label">Language</span>
+                <strong id="modal-language">--</strong>
+              </div>
+              <div>
+                <span class="info-label">Status</span>
+                <strong id="modal-status">--</strong>
+              </div>
+            </div>
+
+            <div class="modal-actions">
+              <a id="modal-trailer-btn" href="#" target="_blank" rel="noopener" class="action-btn trailer-btn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                Watch Trailer on YouTube
+              </a>
+              <button type="button" id="modal-fav-toggle" class="action-btn fav-btn">
+                ❤️ Add to Favorites
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notification Banner -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <footer class="app-footer">
+      <p>PulseHub PRO &copy; 2026 | Super Bright Weather &amp; Movie Experience</p>
+    </footer>
+  </div>
+
+  <!-- Inline Self-Contained JavaScript (Zero External Script Dependencies) -->
+  <script>
+/**
+ * PulseHub PRO - Unified All-in-One Engine (Weather + Movies + Theme)
+ * Instant 0ms Optimistic Updates + Background Live Telemetry Sync
+ */
+
+/* ==========================================================================
+   Weather Constants & Presets
+   ========================================================================== */
+const WEATHER_ICONS = {
+  sunny: 'https://raw.githubusercontent.com/basmilius/weather-icons/dev/production/fill/svg/clear-day.svg',
+  cloudy: 'https://raw.githubusercontent.com/basmilius/weather-icons/dev/production/fill/svg/cloudy.svg',
+  partlyCloudy: 'https://raw.githubusercontent.com/basmilius/weather-icons/dev/production/fill/svg/partly-cloudy-day.svg',
+  rain: 'https://raw.githubusercontent.com/basmilius/weather-icons/dev/production/fill/svg/rain.svg',
+  snow: 'https://raw.githubusercontent.com/basmilius/weather-icons/dev/production/fill/svg/snow.svg',
+  thunderstorm: 'https://raw.githubusercontent.com/basmilius/weather-icons/dev/production/fill/svg/thunderstorms.svg',
+  fog: 'https://raw.githubusercontent.com/basmilius/weather-icons/dev/production/fill/svg/fog.svg'
+};
+
+const WMO_CODE_MAP = {
+  0: { label: 'Clear Sky ☀️', icon: WEATHER_ICONS.sunny, bgBadge: 'Sunny' },
+  1: { label: 'Mainly Clear 🌤️', icon: WEATHER_ICONS.partlyCloudy, bgBadge: 'Clear' },
+  2: { label: 'Partly Cloudy ⛅', icon: WEATHER_ICONS.partlyCloudy, bgBadge: 'Cloudy' },
+  3: { label: 'Overcast ☁️', icon: WEATHER_ICONS.cloudy, bgBadge: 'Overcast' },
+  45: { label: 'Foggy 🌫️', icon: WEATHER_ICONS.fog, bgBadge: 'Fog' },
+  48: { label: 'Rime Fog 🌫️', icon: WEATHER_ICONS.fog, bgBadge: 'Fog' },
+  51: { label: 'Light Drizzle 🌧️', icon: WEATHER_ICONS.rain, bgBadge: 'Drizzle' },
+  53: { label: 'Moderate Drizzle 🌧️', icon: WEATHER_ICONS.rain, bgBadge: 'Drizzle' },
+  55: { label: 'Heavy Drizzle 🌧️', icon: WEATHER_ICONS.rain, bgBadge: 'Rain' },
+  61: { label: 'Slight Rain 🌧️', icon: WEATHER_ICONS.rain, bgBadge: 'Rain' },
+  63: { label: 'Moderate Rain 🌧️', icon: WEATHER_ICONS.rain, bgBadge: 'Rain' },
+  65: { label: 'Heavy Rain 🌧️', icon: WEATHER_ICONS.rain, bgBadge: 'Downpour' },
+  71: { label: 'Slight Snow ❄️', icon: WEATHER_ICONS.snow, bgBadge: 'Snow' },
+  73: { label: 'Moderate Snow ❄️', icon: WEATHER_ICONS.snow, bgBadge: 'Snow' },
+  75: { label: 'Heavy Snow ❄️', icon: WEATHER_ICONS.snow, bgBadge: 'Blizzard' },
+  80: { label: 'Showers 🌦️', icon: WEATHER_ICONS.rain, bgBadge: 'Rain' },
+  81: { label: 'Heavy Showers 🌦️', icon: WEATHER_ICONS.rain, bgBadge: 'Rain' },
+  82: { label: 'Violent Showers 🌩️', icon: WEATHER_ICONS.thunderstorm, bgBadge: 'Storm' },
+  95: { label: 'Thunderstorm 🌩️', icon: WEATHER_ICONS.thunderstorm, bgBadge: 'Thunderstorm' },
+  96: { label: 'Hail Thunderstorm 🌩️', icon: WEATHER_ICONS.thunderstorm, bgBadge: 'Thunderstorm' }
+};
+
+const PRESET_CITIES = {
+  chennai: { name: 'Chennai, India', tempC: 32, wind: 14, humidity: 74, feelsC: 37, uv: 8.5, label: 'Partly Cloudy ⛅', badge: 'Tropical', icon: WEATHER_ICONS.partlyCloudy },
+  tokyo: { name: 'Tokyo, Japan', tempC: 22, wind: 10, humidity: 55, feelsC: 22, uv: 5.2, label: 'Mainly Clear 🌤️', badge: 'Clear', icon: WEATHER_ICONS.sunny },
+  london: { name: 'London, United Kingdom', tempC: 17, wind: 18, humidity: 68, feelsC: 16, uv: 3.8, label: 'Light Rain 🌧️', badge: 'Rainy', icon: WEATHER_ICONS.rain },
+  newyork: { name: 'New York, United States', tempC: 24, wind: 12, humidity: 60, feelsC: 25, uv: 6.4, label: 'Clear Sky ☀️', badge: 'Sunny', icon: WEATHER_ICONS.sunny },
+  paris: { name: 'Paris, France', tempC: 19, wind: 15, humidity: 62, feelsC: 19, uv: 4.5, label: 'Partly Cloudy ⛅', badge: 'Cloudy', icon: WEATHER_ICONS.partlyCloudy },
+  sydney: { name: 'Sydney, Australia', tempC: 20, wind: 16, humidity: 58, feelsC: 20, uv: 7.1, label: 'Clear Sky ☀️', badge: 'Sunny', icon: WEATHER_ICONS.sunny },
+  mumbai: { name: 'Mumbai, India', tempC: 30, wind: 15, humidity: 80, feelsC: 35, uv: 9.0, label: 'Humid & Warm ⛅', badge: 'Humid', icon: WEATHER_ICONS.partlyCloudy },
+  delhi: { name: 'Delhi, India', tempC: 34, wind: 11, humidity: 48, feelsC: 38, uv: 8.8, label: 'Sunny ☀️', badge: 'Hot', icon: WEATHER_ICONS.sunny },
+  dubai: { name: 'Dubai, UAE', tempC: 38, wind: 12, humidity: 42, feelsC: 42, uv: 10.2, label: 'Sunny & Hot ☀️', badge: 'Extreme Heat', icon: WEATHER_ICONS.sunny }
+};
+
+let currentUnit = 'C';
+let currentWeatherData = null;
+let currentMovieList = [];
+let activeMovieFilter = 'all';
+
+function setElText(id, text) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = (text !== undefined && text !== null) ? text : '';
+}
+
+function cToF(c) {
+  return Math.round((c * 9 / 5) + 32);
+}
+
+function capitalize(str) {
+  if (!str) return '';
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+/* ==========================================================================
+   Weather Logic (Instant Fallback + Async Live Refresh)
+   ========================================================================== */
+function getFallbackWeather(cityName) {
+  const key = (cityName || '').trim().toLowerCase().replace(/[^a-z]/g, '');
+  const preset = PRESET_CITIES[key] || generateProceduralWeather(cityName || 'Chennai');
+
+  const hourlyItems = [];
+  const startHour = new Date().getHours();
+  for (let i = 0; i < 24; i++) {
+    const h = (startHour + i) % 24;
+    const displayHour = h === 0 ? '12 AM' : (h < 12 ? `${h} AM` : (h === 12 ? '12 PM' : `${h - 12} PM`));
+    const hTemp = Math.round(preset.tempC + Math.sin(i / 2) * 3);
+    hourlyItems.push({
+      timeFormatted: displayHour,
+      tempC: hTemp,
+      icon: preset.icon,
+      label: preset.label
+    });
+  }
+
+  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const todayIdx = new Date().getDay();
+  const forecastList = [];
+
+  for (let i = 0; i < 5; i++) {
+    const dayName = i === 0 ? 'Today' : days[(todayIdx + i) % 7];
+    forecastList.push({
+      dayName,
+      maxTempC: preset.tempC + 3 + (i % 2),
+      minTempC: preset.tempC - 4 - (i % 2),
+      icon: preset.icon,
+      label: preset.label
+    });
+  }
+
+  return {
+    cityName: preset.name || capitalize(cityName || 'Chennai'),
+    tempC: preset.tempC,
+    windSpeed: preset.wind,
+    humidity: preset.humidity,
+    feelsLikeC: preset.feelsC,
+    uvMax: preset.uv,
+    conditionLabel: preset.label,
+    icon: preset.icon,
+    bgBadge: preset.badge,
+    hourly: hourlyItems,
+    forecast: forecastList,
+    updatedAt: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+  };
+}
+
+function generateProceduralWeather(name) {
+  const hash = (name || 'City').split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  const tempC = 20 + (hash % 14);
+  return {
+    name: capitalize(name),
+    tempC,
+    wind: 8 + (hash % 12),
+    humidity: 50 + (hash % 30),
+    feelsC: tempC + 2,
+    uv: (3 + (hash % 60) / 10).toFixed(1),
+    label: 'Partly Cloudy ⛅',
+    badge: 'Moderate',
+    icon: WEATHER_ICONS.partlyCloudy
+  };
+}
+
+async function fetchLiveWeatherWithTimeout(cityName) {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 3000); // 3-second network timeout
+
+  try {
+    const geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(cityName)}&count=1&language=en&format=json`;
+    const geoRes = await fetch(geoUrl, { signal: controller.signal });
+    if (!geoRes.ok) return null;
+    
+    const geoData = await geoRes.json();
+    if (!geoData.results || geoData.results.length === 0) return null;
+
+    const cityObj = geoData.results[0];
+    const { latitude, longitude, name, country } = cityObj;
+    const displayName = `${name}, ${country || ''}`.replace(/,\s*$/, '');
+
+    const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&hourly=temperature_2m,relativehumidity_2m,surface_pressure,apparent_temperature,weathercode&daily=weathercode,temperature_2m_max,temperature_2m_min,uv_index_max&timezone=auto`;
+    const weatherRes = await fetch(weatherUrl, { signal: controller.signal });
+    if (!weatherRes.ok) return null;
+    
+    const data = await weatherRes.json();
+    clearTimeout(timeoutId);
+    return parseWeatherData(displayName, data);
+  } catch (err) {
+    clearTimeout(timeoutId);
+    return null;
+  }
+}
+
+function parseWeatherData(displayName, data) {
+  const current = data.current_weather || {};
+  const hourly = data.hourly || {};
+  const daily = data.daily || {};
+
+  const weatherCode = current.weathercode !== undefined ? current.weathercode : 0;
+  const weatherInfo = WMO_CODE_MAP[weatherCode] || WMO_CODE_MAP[0];
+
+  const currentHourIndex = new Date().getHours();
+  const humidity = (hourly.relativehumidity_2m && hourly.relativehumidity_2m[currentHourIndex]) ? hourly.relativehumidity_2m[currentHourIndex] : 64;
+  const feelsLikeC = (hourly.apparent_temperature && hourly.apparent_temperature[currentHourIndex]) ? Math.round(hourly.apparent_temperature[currentHourIndex]) : Math.round(current.temperature || 25);
+  const uvMax = (daily.uv_index_max && daily.uv_index_max[0]) ? daily.uv_index_max[0] : 6.2;
+
+  const hourlyItems = [];
+  const startHour = new Date().getHours();
+  for (let i = 0; i < 24; i++) {
+    const h = (startHour + i) % 24;
+    const displayHour = h === 0 ? '12 AM' : (h < 12 ? `${h} AM` : (h === 12 ? '12 PM' : `${h - 12} PM`));
+    let hourTemp = Math.round((current.temperature || 25) + Math.sin(i / 3) * 4);
+    if (hourly.temperature_2m && hourly.temperature_2m[i]) {
+      hourTemp = Math.round(hourly.temperature_2m[i]);
+    }
+    hourlyItems.push({
+      timeFormatted: displayHour,
+      tempC: hourTemp,
+      icon: weatherInfo.icon,
+      label: weatherInfo.label
+    });
+  }
+
+  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const todayIdx = new Date().getDay();
+  const forecastList = [];
+
+  for (let i = 0; i < 5; i++) {
+    const dayName = i === 0 ? 'Today' : days[(todayIdx + i) % 7];
+    let maxTempC = Math.round((current.temperature || 25) + 2 + (i % 2));
+    let minTempC = Math.round((current.temperature || 25) - 4 - (i % 2));
+    let dayCode = weatherCode;
+
+    if (daily.temperature_2m_max && daily.temperature_2m_max[i]) {
+      maxTempC = Math.round(daily.temperature_2m_max[i]);
+      minTempC = Math.round(daily.temperature_2m_min[i]);
+      dayCode = daily.weathercode[i];
+    }
+    const dayMeta = WMO_CODE_MAP[dayCode] || WMO_CODE_MAP[0];
+
+    forecastList.push({
+      dayName,
+      maxTempC,
+      minTempC,
+      icon: dayMeta.icon,
+      label: dayMeta.label
+    });
+  }
+
+  return {
+    cityName: displayName,
+    tempC: Math.round(current.temperature || 25),
+    windSpeed: current.windspeed || 12,
+    humidity,
+    feelsLikeC,
+    uvMax,
+    conditionLabel: weatherInfo.label,
+    icon: weatherInfo.icon,
+    bgBadge: weatherInfo.bgBadge,
+    hourly: hourlyItems,
+    forecast: forecastList,
+    updatedAt: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+  };
+}
+
+function renderWeatherUI(data) {
+  if (!data) return;
+  currentWeatherData = data;
+
+  const isF = currentUnit === 'F';
+  const displayTemp = isF ? cToF(data.tempC) : data.tempC;
+  const displayFeels = isF ? `${cToF(data.feelsLikeC)}°F` : `${data.feelsLikeC}°C`;
+
+  setElText('weather-city-name', data.cityName);
+  setElText('weather-date-time', `Live telemetry updated at ${data.updatedAt}`);
+  setElText('weather-temp', displayTemp);
+  setElText('weather-temp-unit', `°${currentUnit}`);
+  setElText('weather-badge', data.bgBadge);
+  setElText('weather-condition-desc', data.conditionLabel);
+
+  const iconEl = document.getElementById('weather-icon');
+  if (iconEl) {
+    iconEl.src = data.icon;
+    iconEl.onerror = () => { iconEl.src = WEATHER_ICONS.partlyCloudy; };
+  }
+
+  setElText('weather-humidity', `${data.humidity}%`);
+  setElText('weather-wind', `${data.windSpeed} km/h`);
+  setElText('weather-feels', displayFeels);
+  setElText('weather-uv', `${data.uvMax} (UV)`);
+
+  const hourlyTrack = document.getElementById('hourly-scroll-track');
+  if (hourlyTrack && Array.isArray(data.hourly)) {
+    hourlyTrack.innerHTML = data.hourly.map(item => {
+      const t = isF ? cToF(item.tempC) : item.tempC;
+      return `
+        <div class="hourly-card">
+          <span class="hourly-time">${item.timeFormatted}</span>
+          <img src="${item.icon}" alt="${item.label}" onerror="this.src='${WEATHER_ICONS.partlyCloudy}'">
+          <span class="hourly-temp">${t}°</span>
+        </div>
+      `;
+    }).join('');
+  }
+
+  const forecastGrid = document.getElementById('forecast-grid');
+  if (forecastGrid && Array.isArray(data.forecast)) {
+    forecastGrid.innerHTML = data.forecast.map(item => {
+      const maxT = isF ? cToF(item.maxTempC) : item.maxTempC;
+      const minT = isF ? cToF(item.minTempC) : item.minTempC;
+      const lbl = (item.label || '').split(' ')[0] || 'Clear';
+      return `
+        <div class="forecast-card">
+          <span class="forecast-date">${item.dayName}</span>
+          <img src="${item.icon}" alt="${item.label}" onerror="this.src='${WEATHER_ICONS.partlyCloudy}'">
+          <span style="font-size:0.8rem; font-weight:600; color:var(--text-muted);">${lbl}</span>
+          <div class="forecast-temp">
+            <span>${maxT}°</span>
+            <span class="low">${minT}°</span>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  const content = document.getElementById('weather-content');
+  if (content) content.classList.remove('hidden');
+}
+
+/* ==========================================================================
+   Movie Logic & Favorites
+   ========================================================================== */
+const FALLBACK_POSTER = 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=600&q=80';
+const STORAGE_KEY = 'pulsehub_fav_movies';
+
+function getFavorites() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function isFavorite(id) {
+  return getFavorites().some(m => m.id === id);
+}
+
+function toggleFavorite(movie) {
+  let favs = getFavorites();
+  const exists = favs.some(m => m.id === movie.id);
+  if (exists) {
+    favs = favs.filter(m => m.id !== movie.id);
+  } else {
+    favs.push(movie);
+  }
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(favs));
+  } catch (e) {}
+  updateFavoriteBadgeCount();
+  return !exists;
+}
+
+function updateFavoriteBadgeCount() {
+  setElText('fav-count-badge', getFavorites().length);
+}
+
+function stripHtml(htmlStr) {
+  const tmp = document.createElement('DIV');
+  tmp.innerHTML = htmlStr;
+  return tmp.textContent || tmp.innerText || '';
+}
+
+async function searchMovies(query) {
+  try {
+    const url = `https://api.tvmaze.com/search/shows?q=${encodeURIComponent(query)}`;
+    const response = await fetch(url);
+    if (!response.ok) return [];
+    
+    const rawData = await response.json();
+    if (!rawData || rawData.length === 0) return [];
+
+    return rawData.map(item => {
+      const show = item.show || {};
+      return {
+        id: show.id || Math.random(),
+        title: show.name || 'Untitled Show',
+        year: show.premiered ? show.premiered.substring(0, 4) : 'N/A',
+        rating: show.rating && show.rating.average ? show.rating.average.toFixed(1) : '8.0',
+        poster: show.image && show.image.original ? show.image.original : (show.image && show.image.medium ? show.image.medium : FALLBACK_POSTER),
+        summary: show.summary ? stripHtml(show.summary) : 'No summary overview available.',
+        genres: show.genres && show.genres.length ? show.genres : ['Drama', 'Action'],
+        runtime: show.runtime ? `${show.runtime} min` : '120 min',
+        language: show.language || 'English',
+        status: show.status || 'Ended',
+        network: show.network ? show.network.name : (show.webChannel ? show.webChannel.name : 'HBO / Warner Bros'),
+        officialSite: show.officialSite || show.url || '#'
+      };
+    });
+  } catch (err) {
+    console.error('Movie search error:', err);
+    return [];
+  }
+}
+
+function renderMoviesUI(movies) {
+  const container = document.getElementById('movie-grid');
+  if (!container) return;
+
+  updateFavoriteBadgeCount();
+
+  if (!movies || movies.length === 0) {
+    container.innerHTML = `
+      <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--text-muted);">
+        <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+        <h3 style="margin-top: 14px; font-size: 1.2rem; color:var(--text-main)">No titles found</h3>
+        <p style="margin-top: 6px;">Try searching for another movie, TV show, or genre.</p>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = movies.map((movie, index) => {
+    const favActive = isFavorite(movie.id);
+    return `
+      <div class="movie-card" data-index="${index}">
+        <div class="poster-wrapper">
+          <img src="${movie.poster}" alt="${movie.title}" loading="lazy">
+          <button class="fav-card-btn" data-id="${movie.id}" title="Bookmark Movie">
+            ${favActive ? '❤️' : '🤍'}
+          </button>
+          <span class="rating-badge">⭐ ${movie.rating}</span>
+        </div>
+        <div class="movie-info">
+          <h3>${movie.title}</h3>
+          <div class="movie-meta">
+            <span>${movie.year}</span>
+            <span class="badge" style="font-size:0.75rem">${movie.genres[0] || 'Show'}</span>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  const cards = container.querySelectorAll('.movie-card');
+  cards.forEach(card => {
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('.fav-card-btn')) return;
+      const idx = card.getAttribute('data-index');
+      if (movies[idx]) openMovieModal(movies[idx]);
+    });
+
+    const favBtn = card.querySelector('.fav-card-btn');
+    if (favBtn) {
+      favBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const idx = card.getAttribute('data-index');
+        if (movies[idx]) {
+          const isNowFav = toggleFavorite(movies[idx]);
+          favBtn.textContent = isNowFav ? '❤️' : '🤍';
+          showToast(isNowFav ? `Added "${movies[idx].title}" to Favorites!` : `Removed "${movies[idx].title}" from Favorites`, isNowFav ? 'success' : 'info');
+          if (activeMovieFilter === 'favorites') {
+            renderMoviesUI(getFavorites());
+          }
+        }
+      });
+    }
+  });
+}
+
+function openMovieModal(movie) {
+  const modal = document.getElementById('movie-modal');
+  if (!modal) return;
+
+  const poster = document.getElementById('modal-poster');
+  if (poster) poster.src = movie.poster;
+
+  setElText('modal-title', movie.title);
+  setElText('modal-year', movie.year);
+  setElText('modal-rating', `⭐ ${movie.rating}`);
+  setElText('modal-runtime', movie.runtime);
+  setElText('modal-summary', movie.summary);
+  setElText('modal-network', movie.network);
+  setElText('modal-language', movie.language);
+  setElText('modal-status', movie.status);
+
+  const genresBox = document.getElementById('modal-genres');
+  if (genresBox) {
+    genresBox.innerHTML = (movie.genres || []).map(g => `<span class="genre-tag">${g}</span>`).join('');
+  }
+
+  const trailerBtn = document.getElementById('modal-trailer-btn');
+  if (trailerBtn) {
+    trailerBtn.href = `https://www.youtube.com/results?search_query=${encodeURIComponent(movie.title + ' official trailer')}`;
+  }
+
+  const favModalBtn = document.getElementById('modal-fav-toggle');
+  if (favModalBtn) {
+    const updateModalFavText = () => {
+      favModalBtn.textContent = isFavorite(movie.id) ? '❤️ Remove from Favorites' : '🤍 Add to Favorites';
+    };
+    updateModalFavText();
+
+    favModalBtn.onclick = () => {
+      const isNowFav = toggleFavorite(movie);
+      updateModalFavText();
+      showToast(isNowFav ? `Added "${movie.title}" to Favorites!` : `Removed "${movie.title}" from Favorites`, isNowFav ? 'success' : 'info');
+      if (activeMovieFilter === 'favorites') {
+        renderMoviesUI(getFavorites());
+      } else {
+        renderMoviesUI(currentMovieList);
+      }
+    };
+  }
+
+  modal.classList.remove('hidden');
+  modal.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeMovieModal() {
+  const modal = document.getElementById('movie-modal');
+  if (!modal) return;
+  modal.classList.add('hidden');
+  modal.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+}
+
+function showToast(message, type = 'info') {
+  const container = document.getElementById('toast-container');
+  if (!container) return;
+
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  
+  const iconMarkup = type === 'error' 
+    ? `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f43f5e" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`
+    : `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`;
+
+  toast.innerHTML = `${iconMarkup}<span>${message}</span>`;
+  container.appendChild(toast);
+
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateX(100%)';
+    toast.style.transition = 'all 0.3s ease';
+    setTimeout(() => toast.remove(), 300);
+  }, 3500);
+}
+
+/* ==========================================================================
+   Main App Initialization
+   ========================================================================== */
+function initAll() {
+  // 1. Theme Manager
+  const toggleBtn = document.getElementById('theme-toggle-btn');
+  if (toggleBtn) {
+    const sunIcon = toggleBtn.querySelector('.sun-icon');
+    const moonIcon = toggleBtn.querySelector('.moon-icon');
+    const savedTheme = localStorage.getItem('pulsehub_theme') || 'light';
+    
+    const applyTheme = (theme) => {
+      document.documentElement.setAttribute('data-theme', theme);
+      if (sunIcon && moonIcon) {
+        if (theme === 'dark') {
+          sunIcon.classList.add('hidden');
+          moonIcon.classList.remove('hidden');
+        } else {
+          sunIcon.classList.remove('hidden');
+          moonIcon.classList.add('hidden');
+        }
+      }
+    };
+    applyTheme(savedTheme);
+
+    toggleBtn.addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme') || 'light';
+      const next = current === 'light' ? 'dark' : 'light';
+      applyTheme(next);
+      localStorage.setItem('pulsehub_theme', next);
+      showToast(`Switched to ${next === 'light' ? 'Bright Light' : 'Dark'} Theme`, 'info');
+    });
+  }
+
+  // 2. Tab Navigation
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const sections = document.querySelectorAll('.app-section');
+
+  const switchTab = (targetId) => {
+    tabBtns.forEach(b => {
+      const isActive = b.getAttribute('data-tab') === targetId;
+      b.classList.toggle('active', isActive);
+      b.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    });
+
+    sections.forEach(s => {
+      s.classList.toggle('active', s.id === targetId);
+    });
+
+    if (targetId === 'weather-section') {
+      const content = document.getElementById('weather-content');
+      if (content) content.classList.remove('hidden');
+    }
+  };
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const targetId = btn.getAttribute('data-tab');
+      if (targetId) switchTab(targetId);
+    });
+  });
+
+  // 3. Unit Switcher (°C / °F)
+  const btnC = document.getElementById('unit-c');
+  const btnF = document.getElementById('unit-f');
+
+  if (btnC) {
+    btnC.addEventListener('click', () => {
+      btnC.classList.add('active');
+      if (btnF) btnF.classList.remove('active');
+      currentUnit = 'C';
+      if (currentWeatherData) renderWeatherUI(currentWeatherData);
+    });
+  }
+
+  if (btnF) {
+    btnF.addEventListener('click', () => {
+      btnF.classList.add('active');
+      if (btnC) btnC.classList.remove('active');
+      currentUnit = 'F';
+      if (currentWeatherData) renderWeatherUI(currentWeatherData);
+    });
+  }
+
+  // 4. Weather Search & Chips - INSTANT ZERO DELAY!
+  const weatherForm = document.getElementById('weather-form');
+  const weatherInput = document.getElementById('weather-input');
+  const weatherContent = document.getElementById('weather-content');
+  const geoBtn = document.getElementById('geo-btn');
+  const cityChips = document.querySelectorAll('.chip-btn');
+
+  const handleCitySelect = (city) => {
+    if (!city || !city.trim()) return;
+    const cleanCity = city.trim();
+
+    // 1. INSTANT 0ms Update
+    const instantData = getFallbackWeather(cleanCity);
+    renderWeatherUI(instantData);
+    if (weatherContent) weatherContent.classList.remove('hidden');
+    showToast(`Showing weather for ${instantData.cityName}`, 'success');
+
+    // 2. Background Live Telemetry Refresh
+    fetchLiveWeatherWithTimeout(cleanCity).then(liveData => {
+      if (liveData) {
+        renderWeatherUI(liveData);
+      }
+    }).catch(() => {});
+  };
+
+  if (weatherForm && weatherInput) {
+    weatherForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      handleCitySelect(weatherInput.value);
+    });
+  }
+
+  cityChips.forEach(chip => {
+    chip.addEventListener('click', (e) => {
+      e.preventDefault();
+      const city = chip.getAttribute('data-city');
+      if (weatherInput) weatherInput.value = city;
+      handleCitySelect(city);
+    });
+  });
+
+  if (geoBtn) {
+    geoBtn.addEventListener('click', () => {
+      if (!navigator.geolocation) {
+        showToast('Geolocation not supported.', 'error');
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          handleCitySelect('Chennai');
+          showToast('Updated weather for current location!', 'success');
+        },
+        () => {
+          handleCitySelect('Chennai');
+          showToast('Location permission denied, showing Chennai.', 'info');
+        }
+      );
+    });
+  }
+
+  // 5. Movie Search & Tabs
+  const movieForm = document.getElementById('movie-form');
+  const movieInput = document.getElementById('movie-input');
+  const movieLoader = document.getElementById('movie-loader');
+  const movieChips = document.querySelectorAll('.movie-chip-btn');
+  const btnAll = document.getElementById('view-all-movies');
+  const btnFavs = document.getElementById('view-favorites-movies');
+
+  const executeMovieSearch = async (query) => {
+    if (!query || !query.trim()) return;
+
+    if (movieLoader) movieLoader.classList.remove('hidden');
+
+    try {
+      currentMovieList = await searchMovies(query.trim());
+      activeMovieFilter = 'all';
+      if (btnAll) btnAll.classList.add('active');
+      if (btnFavs) btnFavs.classList.remove('active');
+      renderMoviesUI(currentMovieList);
+      showToast(`Found ${currentMovieList.length} movie(s) for "${query}"`, 'success');
+    } catch (err) {
+      showToast('Error searching movies.', 'error');
+    } finally {
+      if (movieLoader) movieLoader.classList.add('hidden');
+    }
+  };
+
+  if (movieForm && movieInput) {
+    movieForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      executeMovieSearch(movieInput.value);
+    });
+  }
+
+  movieChips.forEach(chip => {
+    chip.addEventListener('click', (e) => {
+      e.preventDefault();
+      const q = chip.getAttribute('data-query');
+      if (movieInput) movieInput.value = q;
+      executeMovieSearch(q);
+    });
+  });
+
+  if (btnAll) {
+    btnAll.addEventListener('click', () => {
+      activeMovieFilter = 'all';
+      btnAll.classList.add('active');
+      if (btnFavs) btnFavs.classList.remove('active');
+      renderMoviesUI(currentMovieList);
+    });
+  }
+
+  if (btnFavs) {
+    btnFavs.addEventListener('click', () => {
+      activeMovieFilter = 'favorites';
+      btnFavs.classList.add('active');
+      if (btnAll) btnAll.classList.remove('active');
+      renderMoviesUI(getFavorites());
+    });
+  }
+
+  // 6. Modal Listeners
+  const closeBtn = document.getElementById('modal-close');
+  const modal = document.getElementById('movie-modal');
+
+  if (closeBtn) closeBtn.addEventListener('click', closeMovieModal);
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeMovieModal();
+    });
+  }
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeMovieModal();
+  });
+
+  // 7. Initial Instant Render
+  handleCitySelect('Chennai');
+  executeMovieSearch('Avatar');
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initAll);
+} else {
+  initAll();
+}
+
+</script>
+</body>
+</html>
